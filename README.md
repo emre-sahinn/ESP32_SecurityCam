@@ -1,4 +1,4 @@
-# ESP32 Security Camera
+# ESP32 Security Camera  :camera:
 
 <img src="https://user-images.githubusercontent.com/30238276/83972942-cc80de80-a8eb-11ea-9541-ea2e76cdec73.png" width="20%" height="20%"> <img src="https://user-images.githubusercontent.com/30238276/83972947-cee33880-a8eb-11ea-815a-e5a11b83577a.png" width="30%" height="20%"> 
 
@@ -6,11 +6,11 @@ ESP32 is capable of functioning reliably in industrial environments, with operat
 
 ## Goal
 
-You can identify thieves or make a video about your newly sprouted seed's growth!
+You can identify thieves or make a video about your newly sprouted seed's growth! :seedling:
 
 ## Reliability
 
-I tested ESP32CAM to take a photo of my parent's car every second for security reasons and over 20 thousand photos, there are no errors!
+:pushpin: I tested ESP32CAM to take a photo of my parent's car every second for security reasons and over 20 thousand photos, there are no errors!
 
 <img src="https://user-images.githubusercontent.com/30238276/84045100-1089e700-a9b1-11ea-9295-c160fedb9dcf.png" width="60%" height="60%">
 
@@ -19,21 +19,21 @@ I tested ESP32CAM to take a photo of my parent's car every second for security r
 These instructions will get you a copy of the project up and running on your development board: <br>
 Step 1) Download Arduino IDE<br>
 Step 2) Download ESP32 Core for IDE<br>
-Step 6) Compile the given code<br>
-Step 7) Connect the camera module to ESP32<br>
-Step 8) Plug 5V adaptor or 3.3V LiPo Battery to ESP32<br>
+Step 3) Compile the given code<br>
+Step 4) Connect the camera module to ESP32<br>
+Step 5) Plug 5V adaptor or 3.3V LiPo Battery to ESP32<br>
 <br>
 Now you are ready to go! If you use stock values, ESP32 will take photo of every 1 seconds.<br>
 <br>
 
-### Prerequisites
+### Prerequisites :memo:
 
 1 x ESP32CAM module with OV2640<br>
 1 x 5V 2A adaptor or 3.3V LiPo battery<br>
 1 x USB Cable (to upload the code)<br>
 2 x Heatsink (Optional)<br>
 
-## Built With
+## Built With :star2:
 
 * [Arduino](https://www.arduino.cc/) - Arduino IDE
 * [ESP Core](https://github.com/espressif/arduino-esp32) - Arduino ESP32 Core
