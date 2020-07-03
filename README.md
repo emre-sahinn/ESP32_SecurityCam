@@ -2,7 +2,7 @@
 
 <img src="https://user-images.githubusercontent.com/30238276/83972942-cc80de80-a8eb-11ea-9541-ea2e76cdec73.png" width="20%" height="20%"> <img src="https://user-images.githubusercontent.com/30238276/83972947-cee33880-a8eb-11ea-815a-e5a11b83577a.png" width="30%" height="20%"> 
 
-ESP32 is capable of functioning reliably in industrial environments, with operating temperatures ranging from –40°C to +125°C. Also, it achieves ultra-low power consumption which is good for our purpose, a wireless security camera! As a development board, I chose ESP32CAM which is a tiny module based on ESP32 chip and OV2640. The reason why I chose ESP32CAM is that it is cheap and very versatile. So to reduce the power consumption, I disconnect the onboard flash and disabled WiFi, Bluetooth modules. The only thing that I added is an 8GB SD card for camera images. I also lowered the image quality to QVGA, without RGB colors so only black and white color range. By doing that I reduced the image size to 7KB which is great for our purpose! If my calculations are correct we can fit approximately 1 billion photos. For indexing and file name, I used EEPROM bit operations to increment the current photo index, so clients can search through photo indexes to find what they are looking for. In the end, I 3D printed chassis for the ESP32CAM module to make it water and heat resistant.  
+ESP32 is capable of functioning reliably in industrial environments, with operating temperatures ranging from –40°C to +125°C. Also, it achieves ultra-low power consumption which is good for our purpose, a wireless security camera! As a development board, I chose ESP32CAM which is a tiny module based on ESP32 chip and OV2640. The reason why I chose ESP32CAM is that it is cheap and very versatile. So to reduce the power consumption, I disconnect the onboard flash and disabled WiFi, Bluetooth modules. The only thing that I added is an 8GB SD card for camera images. I also lowered the image quality to VGA, with RGB colors. By doing that I reduced the image size to 15KB which is great for our purpose! If my calculations are correct we can fit approximately 500k photos. For indexing and file name, I used EEPROM bit operations to increment the current photo index, so clients can search through photo indexes to find what they are looking for. In the end, I 3D printed chassis for the ESP32CAM module to make it water and heat resistant.  
 
 ## Goal
 
@@ -23,7 +23,7 @@ Step 3) Compile the given code<br>
 Step 4) Connect the camera module to ESP32<br>
 Step 5) Plug 5V adaptor or 3.3V LiPo Battery to ESP32<br>
 <br>
-Now you are ready to go! If you use stock values, ESP32 will take photo of every 1 seconds.<br>
+Now you are ready to go! If you use stock values, ESP32 will take photo of every 3(adjustable) seconds.<br>
 <br>
 
 ### Prerequisites :memo:
