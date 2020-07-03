@@ -15,7 +15,7 @@
 #include <EEPROM.h>            // read and write from flash memory
 
 // define the number of bytes you want to access
-#define EEPROM_SIZE 1
+#define EEPROM_SIZE 4
 
 // Pin definition for CAMERA_MODEL_AI_THINKER
 #define PWDN_GPIO_NUM     32
@@ -36,7 +36,9 @@
 #define HREF_GPIO_NUM     23
 #define PCLK_GPIO_NUM     22
 
-uint8_t pictureNumber = 0;
+uint8_t pictureNumber1 = 0;
+uint8_t pictureNumber2 = 0;
+uint8_t pictureNumber3 = 0;
 /*EEPROM ORGANISATION: Count up to 16 million
    First Cell : Picture number
    Second Cell: Memory Index 1
@@ -95,15 +97,15 @@ void setup() {
   config.pin_pwdn = PWDN_GPIO_NUM;
   config.pin_reset = RESET_GPIO_NUM;
   config.xclk_freq_hz = 20000000;
-  config.pixel_format = PIXFORMAT_GRAYSCALE ;//PIXFORMAT_JPEG
+  config.pixel_format = PIXFORMAT_JPEG ;//PIXFORMAT_GRAYSCALE
 
   if (psramFound()) {
-    config.frame_size = FRAMESIZE_XGA; // FRAMESIZE_ + QVGA|CIF|VGA|SVGA|XGA|SXGA|UXGA
-    config.jpeg_quality = 40;
+    config.frame_size = FRAMESIZE_VGA; // FRAMESIZE_ + QVGA|CIF|VGA|SVGA|XGA|SXGA|UXGA
+    config.jpeg_quality = 10;
     config.fb_count = 2;
   } else {
-    config.frame_size = FRAMESIZE_XGA;
-    config.jpeg_quality = 40;//0-63, lower means higher quality
+    config.frame_size = FRAMESIZE_VGA;
+    config.jpeg_quality = 10;//0-63, lower means higher quality
     config.fb_count = 1;
   }
 
@@ -115,14 +117,13 @@ void setup() {
   }
 
   EEPROM.begin(EEPROM_SIZE);
-  //resetEEPROMMemory();      //Use this function when you need empty EEPROM
+  resetEEPROMMemory();      //Use this function when you need empty EEPROM
 }
 
 void writeFile(fs::FS &fs) {
-  pictureNumber = EEPROM.read(0) + 1;
-  String path = "/Photo - " + String(EEPROM.read(3)) + "-" +
-                String(EEPROM.read(2)) + "-" + String(EEPROM.read(1)) + "-" +
-                String(pictureNumber) + ".jpg";
+  String path = "/Photo - " +
+                String(pictureNumber3) + "-" + String(pictureNumber2) + "-" +
+                String(pictureNumber1) + ".jpg";
   Serial.printf("Writing file: %s\n", path.c_str());
 
   File file = fs.open(path.c_str(), FILE_WRITE);
@@ -141,25 +142,34 @@ void writeFile(fs::FS &fs) {
   }
   file.write(fb->buf, fb->len); // payload (image), payload length
 
-  if (EEPROM.read(0) > 254) {
-    pictureNumber = 0;
-    EEPROM.write(0, pictureNumber);
-    EEPROM.write(1, EEPROM.read(1) + 1);
+  pictureNumber1++;
+  if (pictureNumber1 > 254) {
+    pictureNumber1 = 0;
+    pictureNumber2 += 1;
+    EEPROM.write(0, 0);
   }
-  if (EEPROM.read(1) > 254) {
+  if (pictureNumber2 > 254) {
+    pictureNumber2 = 0;
+    pictureNumber3 += 1;
     EEPROM.write(1, 0);
-    EEPROM.write(2, EEPROM.read(2) + 1);
   }
-  if (EEPROM.read(2) > 254) {
+  if (pictureNumber3 > 6) {
+    pictureNumber1 = 0;
+    pictureNumber2 = 0;
+    pictureNumber3 = 0;
     EEPROM.write(2, 0);
-    EEPROM.write(3, EEPROM.read(3) + 1);
   }
-
-  if (EEPROM.read(3) > 254) { //Extreme condition
-    EEPROM.write(3, 0);
-  }
-
-  EEPROM.write(0, pictureNumber);
+  /*
+    Serial.print("byte(pictureNumber1): ");
+    Serial.println(byte(pictureNumber1));
+    Serial.print("byte(pictureNumber2): ");
+    Serial.println(byte(pictureNumber2));
+    Serial.print("byte(pictureNumber3): ");
+    Serial.println(byte(pictureNumber3));
+  */
+  EEPROM.write(0, byte(pictureNumber1));
+  EEPROM.write(1, byte(pictureNumber2));
+  EEPROM.write(2, byte(pictureNumber3));
   EEPROM.commit();
   esp_camera_fb_return(fb);
 }
@@ -212,7 +222,7 @@ int i = 0;
 unsigned long previousMillis = 0;
 void loop() {
   unsigned long currentMillis = millis();
-  if (currentMillis - previousMillis >= 1000) {
+  if (currentMillis - previousMillis >= 3000) {
     previousMillis = currentMillis;
     writeFile(SD_MMC);
   }
